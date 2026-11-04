@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'MrRobot';
+  src: url('/fonts/mr-robot.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --red: #dc2626;
+  --deep: #991b1b;
+  --dark-bg: #060606;
+  --paper: #ece9e4;
+  --muted: #85817d;
+  --line: #292522;
+}
+
+/* CRT Scanlines and Analog Grain */
+.crt-overlay::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  pointer-events: none;
+  opacity: 0.12;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent 0 2px,
+    rgba(255, 255, 255, 0.055) 3px,
+    transparent 4px 5px
+  );
+  mix-blend-mode: screen;
+}
+
+.crt-overlay::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 39;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.38'/%3E%3C/svg%3E");
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #090909;
+}
+::-webkit-scrollbar-thumb {
+  background: #2b2522;
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #991b1b;
+}
+
+/* Corner bracket accents */
+.corner-brackets {
+  position: relative;
+}
+.corner-brackets::before {
+  content: "";
+  position: absolute;
+  top: -1px;
+  left: -1px;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid #dc2626;
+  border-left: 2px solid #dc2626;
+  pointer-events: none;
+}
+.corner-brackets::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  right: -1px;
+  width: 14px;
+  height: 14px;
+  border-bottom: 2px solid #dc2626;
+  border-right: 2px solid #dc2626;
+  pointer-events: none;
+}
+
+/* Glitch or shake on invalid */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  50% { transform: translateX(4px); }
+  75% { transform: translateX(-2px); }
+}
+.shake {
+  animation: shake 0.28s linear;
+}
