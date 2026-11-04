@@ -33,7 +33,7 @@ async function request(endpoint, options = {}) {
         success: true,
         offlineMode: true,
         token: `CH11_SIM_${Date.now().toString(36).toUpperCase()}`,
-        reference: `NODE-11-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+        reference: `HYPER-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
         message: 'HANDSHAKE_ESTABLISHED // OFFLINE_BUFFER'
       };
     }
@@ -42,6 +42,20 @@ async function request(endpoint, options = {}) {
 }
 
 export const authService = {
+  // Individual / Hypervision Registration
+  async registerIndividual(payload) {
+    const data = await request('/api/register/individual', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    });
+    if (data.token) {
+      localStorage.setItem('ch11_auth_token', data.token);
+      localStorage.setItem('ch11_user_role', 'student');
+      localStorage.setItem('ch11_user_identity', payload.fullName || payload.email);
+    }
+    return data;
+  },
+
   // Student Login
   async loginStudent({ sapId, password }) {
     const data = await request('/api/auth/user-login', {
@@ -84,19 +98,11 @@ export const authService = {
     return data;
   },
 
-  // Individual Registration
-  async registerIndividual({ fullName, sapId, email, phone, password }) {
-    return await request('/api/register/individual', {
-      method: 'POST',
-      body: JSON.stringify({ fullName, sapId, email, phone, password }),
-    });
-  },
-
   // Team Registration
-  async registerTeam({ teamName, leaderName, sapId, email, password }) {
+  async registerTeam(payload) {
     return await request('/api/register/team', {
       method: 'POST',
-      body: JSON.stringify({ teamName, leaderName, sapId, email, password }),
+      body: JSON.stringify(payload),
     });
   },
 
